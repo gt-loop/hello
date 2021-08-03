@@ -37,7 +37,7 @@ void *camera_start(void *c_camera)
 {
 
     camera *tc_camera = (camera *)c_camera;
-    zlog_debug(logger, "camera is %s pthread %d is runing\n", tc_camera->device_id, pthread_self());
+    zlog_debug(logger, "camera is %s pthread %d is start", tc_camera->device_id, pthread_self());
     //Gat1400 pu_1400(registerJson,unRegisterJson,keepaliveJson,timeJson,facesJson,motorVehiclesJson,subImageInfoJson);
     Gat1400 pu_1400(readFileDate(registerJsonFile).c_str(),
                     readFileDate(unRegisterJsonFile).c_str(),
@@ -70,14 +70,15 @@ void *camera_start(void *c_camera)
         {
             c_http->uri = (char *)URI_REGISTER_1400;
             c_http->body = cJSON_Print(pu_1400.Register);
-            zlog_debug(logger, "c_http->body:%s", c_http->body);
             if (http_post(request, c_http, tc_camera->device_id))
             {
                 isRgister = 1;
+                zlog_info(logger,"camera %s register succeed",tc_camera->device_id);
             }
             else
             {
                 isRgister = 0;
+                zlog_error(logger,"camera %s register failed",tc_camera->device_id);
             };
         }
         if ((!(i % tc_camera->keepalive_rate)) && tc_camera->keepalive_rate && isRgister)
@@ -91,7 +92,10 @@ void *camera_start(void *c_camera)
             pu_1400.refreshMotorVehicles();
             c_http->uri = (char *)URI_MOTORVEHICLES_1400;
             c_http->body = cJSON_Print(pu_1400.mvoljs);
-            http_post(request, c_http, tc_camera->device_id);
+            if(http_post(request, c_http, tc_camera->device_id))
+            {
+                zlog_debug(logger,"camera %s send motorVC succeed",tc_camera->device_id);
+            }
         }
         if ((!(i % tc_camera->faces_rate)) && tc_camera->faces_rate && isRgister)
         {
@@ -99,7 +103,7 @@ void *camera_start(void *c_camera)
 
         i++;
         sleep(1);
-        zlog_debug(logger, "pthread %d is runing", pthread_self());
+        zlog_debug(logger, "camera is %s pthread %d is runing", tc_camera->device_id, pthread_self());
     }
     //return (void *)"ok";
 }
@@ -111,8 +115,9 @@ int main()
     if (!r)
     {
         puts("init failed\n");
+        return -1;
     }
-    zlog_debug(logger, "start ...");
+    zlog_info(logger, "init done");
 
     int cameraNum = cJSON_GetArraySize(cameraList_json);
     pthread_t camera_pthread[cameraNum];
@@ -127,11 +132,11 @@ int main()
         pthc_tmp = pthread_create(&camera_pthread[r], NULL, &camera_start, (void *)&c_camera_camera[r]);
         if (!pthc_tmp)
         {
-            zlog_debug(logger, "pthread:%d is create ok", camera_pthread[r]);
+            zlog_debug(logger, "camera %s pthread:%d is create ok", c_camera_camera[r].device_id,camera_pthread[r]);
         }
         else
         {
-            zlog_debug(logger, "pthread:%d is create failed", camera_pthread[r]);
+            zlog_debug(logger, "camera %s pthread:%d is create failed",c_camera_camera[r].device_id,camera_pthread[r]);
         }
     }
 

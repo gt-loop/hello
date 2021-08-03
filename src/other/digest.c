@@ -220,27 +220,27 @@ int _httpauth_get_response(
 	memset(strH1,0,512);
 	sprintf(strH1,"%s:%s:%s",auth->username,auth->realm,auth->password);
 	len = strlen(strH1);
-	printf("ha1str=%s\n",strH1);
+	//printf("ha1str=%s\n",strH1);
 	md5(strH1, len, result);
 	to_hex(result,16,md5_h1);
-	printf("ha1=%s\n",result);
+	//printf("ha1=%s\n",result);
 
 	memset(strH2,0,512);
 	sprintf(strH2,"%s:%s",cmd,url);
 	len = strlen(strH2);
-	printf("ha2str=%s\n",strH2);
+	//printf("ha2str=%s\n",strH2);
 	md5(strH2, len, result2);
 	to_hex(result2,16,md5_h2);
-	printf("ha2=%s\n",result2);
+	//printf("ha2=%s\n",result2);
 
 	memset(strH1,0,512);
 	sprintf(strH1,"%s:%s:%s:%s:%s:%s",md5_h1,auth->nonce,nc,cnonce,qop,md5_h2);
 	puts(strH1);
 	len = strlen(strH1);
-	printf("str=%s\n",strH1);
+	//printf("str=%s\n",strH1);
 	md5(strH1, len, result);
 	to_hex(result,16,response);
-	printf("response=%s\n",response);
+	//printf("response=%s\n",response);
 
 	return 0;
 }
