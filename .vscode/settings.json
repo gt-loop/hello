@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "cjson.h": "c",
+        "iosfwd": "c",
+        "*.tcc": "cpp",
+        "unordered_map": "cpp",
+        "fstream": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "memory_resource": "c",
+        "b64.h": "c",
+        "iostream": "cpp"
+    }
+}

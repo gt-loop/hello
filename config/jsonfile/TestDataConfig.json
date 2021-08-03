@@ -1,0 +1,14 @@
+{
+    "camreaList":
+    [
+        {"device_id":"00000000001310000009","device_name":"212_08","tollgate_id":"430802000212","tollgate_name":"212","lane_no":1,"direction":"1",
+            "username":"admin","password":"admin","server_addres":"10.30.27.41:23556",
+            "register_rate":3000,"keepalive_rate":300,"motorvm_rate":1,"faces_rate":1},
+        {"device_id":"43080200021300000008","device_name":"213_08","tollgate_id":"430802000213","tollgate_name":"213","lane_no":1,"direction":"2",
+            "username":"admin","password":"12345678","server_addres":"10.30.27.41:23556",
+            "register_rate":3000,"keepalive_rate":300,"motorvm_rate":1,"faces_rate":1},
+        {"device_id":"43080200021400000008","device_name":"214_08","tollgate_id":"430802000214","tollgate_name":"214","lane_no":1,"direction":"3",
+            "username":"admin","password":"12345678","server_addres":"10.30.27.41:23556",
+            "register_rate":3000,"keepalive_rate":300,"motorvm_rate":1,"faces_rate":1}
+    ]
+}
